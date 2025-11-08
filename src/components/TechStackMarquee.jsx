@@ -13,20 +13,17 @@ import {
 } from 'lucide-react';
 
 const techStack = [
-    { name: "MongoDB", icon: Database, category: "Database" },
-    { name: "Express.js", icon: Code, category: "Backend" },
-    { name: "React", icon: Zap, category: "Frontend" },
-    { name: "Node.js", icon: Cpu, category: "Runtime" },
-    { name: "React Native", icon: Smartphone, category: "Mobile" },
-    { name: "Firebase", icon: Database, category: "Backend" },
-    { name: "Supabase", icon: Database, category: "Database" },
-    { name: "PostgreSQL", icon: Database, category: "Database" },
-    { name: "Next.js", icon: Zap, category: "Fullstack" },
-    { name: "Python", icon: Code, category: "Language" },
-    { name: "LangChain", icon: Brain, category: "AI" },
-    { name: "LangGraph", icon: Brain, category: "AI" },
-    { name: "FastAPI", icon: Server, category: "Backend" },
-    { name: "Expo", icon: Smartphone, category: "Mobile" }
+    { name: "MongoDB", icon: 'https://img.icons8.com/color/48/mongodb.png', category: "Database" },
+    { name: "Express.js", icon: 'https://img.icons8.com/color/48/express-js.png', category: "Backend" },
+    { name: "React", icon: 'https://img.icons8.com/color/48/react-native.png', category: "Frontend" },
+    { name: "Node.js", icon: 'https://img.icons8.com/color/48/nodejs.png', category: "Runtime" },
+    { name: "React Native", icon: 'https://img.icons8.com/color/48/react-native.png', category: "Mobile" },
+    { name: "Firebase", icon: 'https://img.icons8.com/color/48/firebase.png', category: "Backend" },
+    { name: "Supabase", icon: 'https://img.icons8.com/color/48/supabase.png', category: "Database" },
+    { name: "PostgreSQL", icon: 'https://img.icons8.com/color/48/postgreesql.png', category: "Database" },
+    { name: "Next.js", icon: 'https://img.icons8.com/color/48/nextjs.png', category: "Fullstack" },
+    { name: "Python", icon: 'https://img.icons8.com/color/48/python--v1.png', category: "Language" },
+    { name: "Expo", icon: 'https://img.icons8.com/color/48/expo.png', category: "Mobile" }
 ];
 
 export default function PremiumTechMarquee() {
@@ -53,6 +50,7 @@ export default function PremiumTechMarquee() {
 
     return (
         <section
+            id="about"
             ref={sectionRef}
             className="relative py-16 bg-black overflow-hidden"
         >
@@ -71,15 +69,15 @@ export default function PremiumTechMarquee() {
                 <h3 className={`text-3xl md:text-4xl font-bold text-white mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     Powered by <span className="bg-gradient-to-r from-red-500 via-red-600 to-red-500 bg-clip-text text-transparent">Modern Technology</span>
                 </h3>
-                <p className={`text-zinc-400 text-lg transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <p className={`text-zinc-400 text-lg px-4 md:px-0 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     Cutting-edge tools and frameworks for exceptional digital experiences
                 </p>
             </div>
 
             <div className="relative">
                 {/* Gradient Overlays */}
-                <div className="absolute left-0 top-0 bottom-0 w-52 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
-                <div className="absolute right-0 top-0 bottom-0 w-52 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-20 md:w-52 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-20 md:w-52 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none"></div>
 
                 {/* Marquee Container */}
                 <div className="overflow-hidden">
@@ -94,7 +92,6 @@ export default function PremiumTechMarquee() {
                         }}
                     >
                         {[...techStack, ...techStack, ...techStack].map((tech, index) => {
-                            const Icon = tech.icon;
                             return (
                                 <div
                                     key={index}
@@ -102,7 +99,14 @@ export default function PremiumTechMarquee() {
                                 >
                                     {/* Icon Container */}
                                     <div className="relative z-10 w-10 h-10 rounded-xl bg-black/80 border border-zinc-700 flex items-center justify-center group-hover:bg-red-500 group-hover:border-red-500 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
-                                        <Icon className="w-5 h-5 text-red-500 group-hover:text-white transition-colors duration-500" />
+                                        {/* Use regular img tag instead of Next.js Image */}
+                                        <img
+                                            src={tech.icon}
+                                            alt={tech.name}
+                                            width={24}
+                                            height={24}
+                                            className="filter group-hover:invert group-hover:brightness-0 transition-all duration-500"
+                                        />
                                     </div>
 
                                     {/* Content */}
@@ -145,9 +149,6 @@ export default function PremiumTechMarquee() {
             {/* Premium CTA */}
             <div className={`text-center transition-all duration-1000 delay-500 max-w-7xl mx-auto mt-14`}>
                 <div className="relative bg-black/80 border border-zinc-800 rounded-2xl p-12 backdrop-blur-sm overflow-hidden">
-                    {/* Border Glow */}
-                    {/* <div className="absolute -inset-px bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-500 blur-sm"></div> */}
-
                     <div className="relative z-10">
                         <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
                             Ready to Build Something Extraordinary?
@@ -168,7 +169,6 @@ export default function PremiumTechMarquee() {
                     </div>
                 </div>
             </div>
-
 
             <style jsx>{`
                 @keyframes marquee {

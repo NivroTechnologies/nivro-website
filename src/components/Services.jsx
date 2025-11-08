@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Code, Smartphone, Globe, Users, ShoppingCart, Headphones, Sparkles, Zap, Target, TrendingUp, ArrowRight, Shield, Clock, CheckCircle } from 'lucide-react';
+import { Code, Smartphone, Globe, Users, ShoppingCart, Headphones, CheckCircle } from 'lucide-react';
 
 const services = [
     {
@@ -49,17 +49,20 @@ const services = [
 
 function ServiceCard({ service, index }) {
     const [isVisible, setIsVisible] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
     const cardRef = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => setIsVisible(true), index * 200);
+                    // Reduced delay for faster appearance
+                    setTimeout(() => setIsVisible(true), index * 100);
                 }
             },
-            { threshold: 0.1 }
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px' // Trigger when 50px from bottom
+            }
         );
 
         if (cardRef.current) {
@@ -74,13 +77,14 @@ function ServiceCard({ service, index }) {
     return (
         <article
             ref={cardRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className={`group relative bg-black/80 backdrop-blur-sm border border-zinc-800 rounded-3xl p-8 transition-all duration-700 overflow-hidden hover:border-primary hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-3 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            className={`group relative bg-black/80 backdrop-blur-sm border border-zinc-800 rounded-3xl p-6 md:p-8 transition-all duration-500 ease-out overflow-hidden ${isVisible
+                    ? 'opacity-100 translate-y-0 border-primary shadow-2xl shadow-primary/20 -translate-y-2'
+                    : 'opacity-0 translate-y-8'
                 }`}
         >
-            {/* Animated Background Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {/* Animated Background Effect - Always show when visible */}
+            <div className={`absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'
+                }`}></div>
 
             {/* Tag Badge */}
             <div className="absolute top-4 right-4 px-3 py-1 bg-primary/20 border border-primary/30 rounded-full backdrop-blur-sm">
@@ -92,15 +96,19 @@ function ServiceCard({ service, index }) {
                 {/* Icon Container */}
                 <div className="mb-6 flex items-start justify-between">
                     <div className="relative">
-                        <div className={`w-14 h-14 rounded-xl bg-black border border-zinc-800 flex items-center justify-center transition-all duration-500 ${isHovered ? 'bg-primary border-primary scale-110 rotate-3' : 'bg-black border-zinc-800'
+                        <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-black border flex items-center justify-center transition-all duration-500 ${isVisible
+                                ? 'bg-primary border-primary scale-110 rotate-3'
+                                : 'bg-black border-zinc-800'
                             }`}>
-                            <Icon className={`w-6 h-6 transition-all duration-500 ${isHovered ? 'text-white scale-110' : 'text-primary'}`} />
+                            <Icon className={`w-5 h-5 md:w-6 md:h-6 transition-all duration-500 ${isVisible ? 'text-white scale-110' : 'text-primary'
+                                }`} />
                         </div>
                     </div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
+                <h3 className={`text-lg md:text-xl font-bold mb-4 transition-colors duration-500 leading-tight ${isVisible ? 'text-primary' : 'text-white'
+                    }`}>
                     {service.title}
                 </h3>
 
@@ -112,16 +120,17 @@ function ServiceCard({ service, index }) {
                 {/* Features List */}
                 <ul className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center gap-2 text-xs text-zinc-500 group-hover:text-zinc-300 transition-colors duration-300">
+                        <li key={featureIndex} className="flex items-center gap-2 text-xs text-zinc-500 transition-colors duration-500">
                             <CheckCircle className="w-3 h-3 text-primary" />
-                            <span>{feature}</span>
+                            <span className={isVisible ? 'text-zinc-300' : 'text-zinc-500'}>{feature}</span>
                         </li>
                     ))}
                 </ul>
             </div>
 
             {/* Bottom Glow Effect */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'
+                }`}></div>
         </article>
     );
 }
@@ -137,7 +146,10 @@ export default function Services() {
                     setTitleVisible(true);
                 }
             },
-            { threshold: 0.1 }
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px' // Trigger earlier
+            }
         );
 
         if (titleRef.current) {
@@ -148,47 +160,36 @@ export default function Services() {
     }, []);
 
     return (
-        <section id="services" className="relative py-20 px-6 bg-black overflow-hidden">
-            <div className="flex items-center justify-center absolute top-0 left-1/2 -translate-x-1/2 w-full">
-                <div className="w-3/5 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-            </div>
-
-            {/* Animated Background */}
+        <section id="services" className="relative py-16 md:py-20 px-4 md:px-6 bg-black overflow-hidden">
+            {/* Simplified Background - Better Performance */}
             <div className="absolute inset-0">
-                {/* Grid Pattern */}
-                <div className="absolute inset-0 opacity-[0.02]" style={{
-                    backgroundImage: `linear-gradient(#e50914 1px, transparent 1px),
-                                    linear-gradient(90deg, #e50914 1px, transparent 1px)`,
-                    backgroundSize: '50px 50px',
-                }}></div>
-
-                {/* Animated Orbs */}
-                <div className="absolute top-1/4 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float"></div>
-                <div className="absolute bottom-1/4 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute top-1/4 -left-24 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-1/4 -right-24 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
             </div>
 
             <div className="container mx-auto max-w-7xl relative z-10">
                 {/* Section Header */}
-                <header ref={titleRef} className={`text-center mb-16 transition-all duration-1000 ${titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                    }`}>
-
+                <header
+                    ref={titleRef}
+                    className={`text-center mb-12 md:mb-16 transition-all duration-700 ease-out ${titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                        }`}
+                >
                     {/* Title */}
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
                         Enterprise-Grade
                         <br />
                         <span className="text-primary">Digital Solutions</span>
                     </h2>
 
                     {/* Subtitle */}
-                    <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed mb-12">
+                    <p className="text-base md:text-lg lg:text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed px-4">
                         Transform your business with cutting-edge technology solutions designed for
                         <span className="text-primary font-semibold"> scalability, performance, and growth</span>
                     </p>
-
                 </header>
 
                 {/* Services Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {services.map((service, index) => (
                         <ServiceCard key={index} service={service} index={index} />
                     ))}

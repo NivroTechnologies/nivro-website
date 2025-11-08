@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 export const supreme = localFont({
   src: [
@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${supreme.variable} ${generalSans.variable}`}>
       <body className="antialiased relative">
-        <Navbar />
+        <NavbarWrapper />
         {children}
       </body>
     </html>

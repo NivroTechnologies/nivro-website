@@ -1,115 +1,157 @@
 'use client';
 
-import { Mail, Menu } from 'lucide-react';
+import { Menu, X, Home, User, Settings, Mail, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
+import React, { useState } from 'react';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
+    // Smooth scroll function
+    const handleSmoothScroll = (e, targetId) => {
+        e.preventDefault();
+        setMenuOpen(false);
+        const element = document.getElementById(targetId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
     return (
-        <nav className={`fixed left-0 right-0 z-50 transition-all duration-500 top-4 mx-auto`}>
-            <div className={`w-[95vw] max-w-7xl backdrop-blur-md ${menuOpen ? 'rounded-2xl' : 'rounded-full'} shadow-2xl border border-muted/30 mx-auto`}>
-                <div className="flex items-center justify-between px-4 md:px-4 py-2">
-                    {/* Logo */}
-                    <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-black rounded-full overflow-hidden flex items-center justify-center">
-                            <Image
-                                src="/images/logo.png"
-                                alt="Nivro Technologies"
-                                width={30} height={30} />
+        <nav className="fixed left-0 right-0 z-[100] top-4 px-4">
+            <div className="max-w-7xl mx-auto">
+                {/* Navbar with logo + hamburger */}
+                <div className="flex items-center justify-between relative z-[120]">
+                    {/* Logo Circle */}
+                    <Link href="/" className="w-12 h-12 bg-black/80 backdrop-blur-xl rounded-full border border-white/20 flex items-center justify-center shadow-lg shadow-black/30">
+                        <Image
+                            src="/images/logo.png"
+                            alt="Nivro Technologies"
+                            width={28}
+                            height={28}
+                            className="rounded-full"
+                        />
+                    </Link>
+
+                    {/* Hamburger Menu Button */}
+                    <div
+                        className="w-12 h-12 bg-transparent backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-300 hover:scale-110 hover:border-white/40 relative cursor-pointer"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        // aria-expanded={menuOpen}
+                        aria-label="Toggle navigation"
+                    >
+                        {menuOpen ? (
+                            <X size={24} className="text-white" />
+                        ) : (
+                            <Menu size={24} className="text-white" />
+                        )}
+                    </div>
+
+                    {/* Creative Dropdown Menu */}
+                    <div
+                        className={`absolute right-0 top-full mt-3 transition-all duration-500 ease-out z-[120] ${menuOpen
+                            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+                            : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'
+                            }`}
+                    >
+                        {/* Animated Background Container */}
+                        <div className="relative">
+
+                            {/* Main Menu Container */}
+                            <div className="relative bg-gradient-to-br from-black/95 to-zinc-900/95 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 px-6 py-6 space-y-3 w-64 sm:w-72">
+                                {/* Menu Items with Creative Animations */}
+                                <a
+                                    href="#home"
+                                    className="group relative flex items-center space-x-4 p-3 rounded-xl text-lg font-semibold text-white hover:text-white transition-all duration-500 overflow-hidden"
+                                    onClick={(e) => handleSmoothScroll(e, 'home')}
+                                >
+                                    {/* Animated Background */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500 transform group-hover:scale-105"></div>
+
+                                    {/* Icon with Creative Effect */}
+                                    <div className="relative z-10 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                                        <Home size={20} className="text-primary group-hover:text-white transition-colors duration-500" />
+                                    </div>
+
+                                    {/* Text with Slide Effect */}
+                                    <span className="relative z-10 transform group-hover:translate-x-2 transition-transform duration-500">
+                                        Home
+                                    </span>
+
+                                    {/* Arrow Indicator */}
+                                    <ArrowRight size={16} className="relative z-10 text-primary/50 group-hover:text-primary transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100 transition-all duration-500 ml-auto" />
+                                </a>
+
+                                <a
+                                    href="#services"
+                                    className="group relative flex items-center space-x-4 p-3 rounded-xl text-lg font-semibold text-white hover:text-white transition-all duration-500 overflow-hidden"
+                                    onClick={(e) => handleSmoothScroll(e, 'services')}
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500 transform group-hover:scale-105"></div>
+
+                                    <div className="relative z-10 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                                        <Settings size={20} className="text-primary group-hover:text-white transition-colors duration-500" />
+                                    </div>
+
+                                    <span className="relative z-10 transform group-hover:translate-x-2 transition-transform duration-500">
+                                        Services
+                                    </span>
+
+                                    <ArrowRight size={16} className="relative z-10 text-primary/50 group-hover:text-primary transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100 transition-all duration-500 ml-auto" />
+                                </a>
+
+                                <Link
+                                    href="/about"
+                                    className="group relative flex items-center space-x-4 p-3 rounded-xl text-lg font-semibold text-white hover:text-white transition-all duration-500 overflow-hidden"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500 transform group-hover:scale-105"></div>
+
+                                    <div className="relative z-10 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                                        <User size={20} className="text-primary group-hover:text-white transition-colors duration-500" />
+                                    </div>
+
+                                    <span className="relative z-10 transform group-hover:translate-x-2 transition-transform duration-500">
+                                        About
+                                    </span>
+
+                                    <ArrowRight size={16} className="relative z-10 text-primary/50 group-hover:text-primary transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100 transition-all duration-500 ml-auto" />
+                                </Link>
+
+                                <a
+                                    href="#contact"
+                                    className="group relative flex items-center space-x-4 p-3 rounded-xl text-lg font-semibold text-white hover:text-white transition-all duration-500 overflow-hidden"
+                                    onClick={(e) => handleSmoothScroll(e, 'contact')}
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-all duration-500 transform group-hover:scale-105"></div>
+
+                                    <div className="relative z-10 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                                        <Mail size={20} className="text-primary group-hover:text-white transition-colors duration-500" />
+                                    </div>
+
+                                    <span className="relative z-10 transform group-hover:translate-x-2 transition-transform duration-500">
+                                        Contact
+                                    </span>
+
+                                    <ArrowRight size={16} className="relative z-10 text-primary/50 group-hover:text-primary transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100 transition-all duration-500 ml-auto" />
+                                </a>
+                            </div>
                         </div>
                     </div>
-
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-12">
-                        <a href="#work" className="text-foreground text-base hover:text-primary transition-colors duration-300">
-                            Work
-                        </a>
-                        <a href="#about" className="text-foreground text-base hover:text-primary transition-colors duration-300">
-                            About
-                        </a>
-                        <a href="#playground" className="text-foreground text-base hover:text-primary transition-colors duration-300">
-                            Playground
-                        </a>
-                        <a href="#resource" className="text-foreground text-base hover:text-primary transition-colors duration-300">
-                            Resource
-                        </a>
-                    </div>
-
-                    {/* Email Button */}
-                    <a
-                        href="mailto:ihyaet@gmail.com"
-                        className="hidden md:flex items-center space-x-2 bg-foreground text-zinc-900 px-6 py-2.5 rounded-full font-medium hover:bg-gray-100 transition-colors duration-300"
-                    >
-                        <span>nivotech@gmail.com</span>
-                    </a>
-
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden text-foreground p-2 rounded-full hover:bg-foreground/10 transition-colors duration-300"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        {menuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* Backdrop - Only for mobile */}
                 <div
-                    className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'h-full border-t border-zinc-800' : 'max-h-0'
+                    className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-all duration-300 md:hidden z-[110] ${menuOpen
+                        ? 'opacity-100 pointer-events-auto'
+                        : 'opacity-0 pointer-events-none'
                         }`}
-                >
-                    <div className="px-6 py-4 space-y-4">
-                        <a
-                            href="#work"
-                            className="block text-foreground hover:text-purple-400 transition-colors duration-300 py-2"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Work
-                        </a>
-                        <a
-                            href="#about"
-                            className="block text-foreground hover:text-purple-400 transition-colors duration-300 py-2"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            About
-                        </a>
-                        <a
-                            href="#playground"
-                            className="block text-foreground hover:text-purple-400 transition-colors duration-300 py-2"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Playground
-                        </a>
-                        <a
-                            href="#resource"
-                            className="block text-foreground hover:text-purple-400 transition-colors duration-300 py-2"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Resource
-                        </a>
-                        <a
-                            href="mailto:ihyaet@gmail.com"
-                            className="flex items-center space-x-2 bg-foreground text-zinc-900 px-6 py-2.5 rounded-full font-medium justify-center"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            <Mail size={18} />
-                            <span>ihyaet@gmail.com</span>
-                        </a>
-                    </div>
-                </div>
+                    onClick={() => setMenuOpen(false)}
+                />
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;
